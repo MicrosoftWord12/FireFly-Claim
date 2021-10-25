@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 //import java.util.List;
 
 public class ChunkClaiming {
@@ -20,12 +21,12 @@ public class ChunkClaiming {
     }
 
     //////////////////// Chunk Claim functionality and so forth start here
-    HashMap<Player, Set<String>> chunk = new HashMap<>();
+    HashMap<UUID, Set<String>> chunk = new HashMap<>();
 
-    public void makeClaim(Player player, Set<String> chunkId){
+    public void makeClaim(UUID uuid, Set<String> chunkId){
         try{
-            chunk.put(player, chunkId);
-            config.get().set("Players." + player.toString() + ".Chunk", chunkId.toString());
+            chunk.put(uuid, chunkId);
+            config.get().set("Players." + uuid.toString() + ".Chunk", chunkId.toString());
             config.save();
         }catch (Exception ex){
             ex.printStackTrace();
@@ -33,8 +34,8 @@ public class ChunkClaiming {
     }
 
     public boolean isClaimOwner(Player player, Set<String> chunkId){
-        if (chunk.containsKey(player) && chunk.containsValue(chunkId)){
-            if (chunk.get(player).equals(chunkId)){
+        if (chunk.containsKey(player.getUniqueId()) && chunk.containsValue(chunkId)){
+            if (chunk.get(player.getUniqueId()).equals(chunkId)){
                 return false;
             }
             return true;
@@ -43,7 +44,7 @@ public class ChunkClaiming {
     }
 
     public boolean isClaimed(Player player, Set<String> chunkId){
-        return chunk.containsKey(player) && chunk.containsValue(chunkId);
+        return chunk.containsKey(player.getUniqueId()) && chunk.containsValue(chunkId);
     }
 
 
