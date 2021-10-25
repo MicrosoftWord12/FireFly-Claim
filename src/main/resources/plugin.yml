@@ -1,0 +1,26 @@
+name: FireFlyClaim
+version: '${project.version}'
+main: com.Microsoft.FireFlyClaim
+api-version: 1.17
+load: POSTWORLD
+authors: [ MicrosoftWord12 ]
+description: Chunk Claiming Util
+
+commands:
+  claim:
+    description: Claims the chunk of land you are standing in
+    permission: FireFlyClaim.claim
+    permission-message: You do not have the required permission
+    usage: /claim
+
+
+
+
+
+
+permissions:
+  FireFlyClaim.claim:
+    description: Allows someone to claim land
+    default: true
+
+
