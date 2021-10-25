@@ -27,12 +27,12 @@ public class ClaimCMD implements CommandExecutor {
         double getZ = player.getLocation().getChunk().getZ();
         String land = getX + " " + getZ;
 
-        if (!chunkClaiming.isClaimed(player, Collections.singleton(land))) {
-            Message.sendMessage(player, "&aYou have claimed this land");
-            chunkClaiming.makeClaim(player.getUniqueId(), Collections.singleton(land));
-            return false;
+        if(chunkClaiming.isInList(player.getUniqueId(), land)){
+            Message.sendMessage(player, "&cThis land is already claimed");
+            return true;
         }
-
+        chunkClaiming.makeClaim(player.getUniqueId(), land);
+        Message.sendMessage(player, "&aYou have claimed some land");
         return true;
     }
 }

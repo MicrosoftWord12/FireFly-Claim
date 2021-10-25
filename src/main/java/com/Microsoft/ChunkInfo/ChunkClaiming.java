@@ -2,13 +2,11 @@ package com.Microsoft.ChunkInfo;
 
 import com.Microsoft.FireFlyClaim;
 import com.Microsoft.Utils.ConfigYML;
+import com.Microsoft.Utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 //import java.util.List;
 
 public class ChunkClaiming {
@@ -21,31 +19,28 @@ public class ChunkClaiming {
     }
 
     //////////////////// Chunk Claim functionality and so forth start here
-    HashMap<UUID, Set<String>> chunk = new HashMap<>();
+//    HashMap<UUID, Set<String>> chunk = new HashMap<>();
 
-    public void makeClaim(UUID uuid, Set<String> chunkId){
+    public void makeClaim(UUID uuid, String chunkId){
         try{
-            chunk.put(uuid, chunkId);
-            config.get().set("Players." + uuid.toString() + ".Chunk", chunkId.toString());
-            config.save();
+            List<String> chunk = new ArrayList<>(config.get().getStringList("Players." + uuid.toString() + ".Chunk"));
+            if (!isInList(uuid, chunkId)){
+                chunk.add(chunkId);
+                config.get().set("Players." + uuid + ".Chunk", chunk);
+                config.save();
+            }
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    public boolean isClaimOwner(Player player, Set<String> chunkId){
-        if (chunk.containsKey(player.getUniqueId()) && chunk.containsValue(chunkId)){
-            if (chunk.get(player.getUniqueId()).equals(chunkId)){
-                return false;
-            }
-            return true;
-        }
-        return true;
+    public boolean isInList(UUID uuid, String chunkId){
+        List<String> chunk = new ArrayList<>(config.get().getStringList("Players." + uuid.toString() + ".Chunk"));
+        return chunk.contains(chunkId);
     }
 
-    public boolean isClaimed(Player player, Set<String> chunkId){
-        return chunk.containsKey(player.getUniqueId()) && chunk.containsValue(chunkId);
-    }
+
+
 
 
 
